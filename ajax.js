@@ -6,10 +6,14 @@ window.jQuery = function(nodes){
     return nodes
 }
 
-window.jQuery.ajax = function(url,method,body,success,fail){
+window.jQuery.ajax = function(url,method,body,header){
     return new Promise(function (resolve,reject){
         let request = new XMLHttpRequest();
         request.open(method,url);
+        for(let key in headers) {
+          let value = headers[key]
+          request.setRequestHeader(key, value)
+        }
         request.onreadystatechange = () =>{
             if(request.readyState === 4){
                 if(request.status >= 200 && request.status < 300){
@@ -22,3 +26,20 @@ window.jQuery.ajax = function(url,method,body,success,fail){
         request.send(body);
     })
 }
+
+
+btn.addEventListener('click',(e) => {
+let promise = window.jQuery.ajax({
+    url: '/xxx',
+    method: 'get',
+    headers: {
+      'content-type':'application/x-www-form-urlencoded',
+      'yyy': '111'
+    }
+  })
+
+  promise.then(
+    (text)=>{console.log(text)},
+    (request)=>{console.log(request)}
+  )
+})
